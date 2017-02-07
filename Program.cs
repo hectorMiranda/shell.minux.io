@@ -6,7 +6,16 @@ namespace Marcetux
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("Marcetux 0.1");
+            var run = true;
+            do
+            {
+                Console.Write("marcetux >");
+                var command = Console.ReadLine();
+                run = !string.IsNullOrEmpty(command);
+                Console.WriteLine(run ? string.Format("{0} not found!", command):"Exiting...");
+            }
+            while(run);
         }
+
     }
 }
