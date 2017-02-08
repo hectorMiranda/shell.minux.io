@@ -1,5 +1,5 @@
 ﻿using System;
-using Marcetux.Utilities;
+using Marcetux.Algorithms;
 using static System.Console;
 
 namespace Marcetux 
