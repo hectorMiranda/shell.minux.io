@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TradeDeskConsole
+namespace MinuxShell
 {
     public static class Shell
     {
