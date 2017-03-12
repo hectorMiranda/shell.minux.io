@@ -15,15 +15,23 @@ namespace MinuxShell
         static Shell()
         {
             register = new Dictionary<string, ICommand>();
+           
+ //TODO: fix this          
+/*           
             var commands = Assembly.GetExecutingAssembly().GetTypes()
     .Where(x => x.GetInterfaces().Contains(typeof(ICommand))
                 && x.GetConstructor(Type.EmptyTypes) != null)
     .Select(x => Activator.CreateInstance(x) as ICommand);
 
+
+
             foreach (ICommand command in commands)
             {
                 register.Add(command.Name, command);
             }
+
+*/
+
         }
 
 
