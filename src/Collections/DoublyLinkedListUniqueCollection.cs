@@ -4,13 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-namespace Marcetux.Utils
+namespace Marcetux.Collections
 {
-    using Interfaces;
-    /// <summary>
-    /// Represents a doubly linked list of unique values, with O(1) random access (to n-th item).
-    /// </summary>
-    /// <typeparam name="TUnique">The type of unique values in the list</typeparam>
     public class DoublyLinkedListUniqueCollection<TUnique> : ICollection<TUnique>
     {
         private LinkedList<TUnique> items;
