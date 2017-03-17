@@ -26,19 +26,6 @@ namespace Marcetux
                 }
             }
         }
-
-        public static void FibonacciNumber(int n){
-           var generator = new FibonacciGenerator();
-
-           foreach(var digit in generator.Generate(15))
-                WriteLine(digit);
-
-        }
-
-
-
-        }
-
-
+     }
 }
 
