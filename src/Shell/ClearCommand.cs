@@ -1,12 +1,14 @@
 ﻿using System;
 
 
-namespace MinuxShell
+namespace Marcetux.Shell
 {
     internal class ClearCommand : ICommand
     {
         public string Name => "clear";
-        public string HelpText => "Clears the console screen.";
+        public string Description => "Clears the console screen.";
+        public string Help => "Clears the console screen.";
+
 
 
 

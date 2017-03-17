@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace MinuxShell
+namespace Marcetux.Shell
 {
-    public static class Shell
+    public static class Processor
     {
-        static readonly Dictionary<string, ICommand> register;
+        private static readonly Dictionary<string, ICommand> register;
+        public static Dictionary<string, ICommand> Register => register;
 
 
-        static Shell()
+
+        static Processor()
         {
             register = new Dictionary<string, ICommand>();
            

@@ -1,12 +1,13 @@
 ﻿using System;
 
 
-namespace MinuxShell
+namespace Marcetux.Shell
 {
     class ExitCommand : ICommand 
     {
         public string Name => "exit";
-        public string HelpText => "Exit this session.";
+        public string Description => "Exit this session.";
+        public string Help => "Exit this session.";
 
         public string Execute(string[] args)
         {

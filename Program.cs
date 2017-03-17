@@ -1,6 +1,8 @@
 ﻿using System;
 using Marcetux.Algorithms;
+using Marcetux.Shell;
 using static System.Console;
+using System.Linq;
 
 namespace Marcetux 
 {
@@ -8,25 +10,21 @@ namespace Marcetux
     {
         public static void Main(string[] args)
         {
-            var run = true;
-            do
+            WriteLine(Processor.Execute("about", null));
+
+            while (true)
             {
-                Console.Write("marcetux >");
-                var command = Console.ReadLine();
-
-                switch(command){
-                    case "fib":
-                        FibonacciNumber(15);
-                        break;
-                    case "exit":
-                        run = false;
-                        break;
-                    default:
-                        WriteLine($"{run} not found");
-                        break;
-
-                }    
-            }while(run);
+                Console.Write("#");
+                var input = ReadLine().Split(' ').ToList<string>();
+                try
+                {
+                    WriteLine("{0}", Processor.Execute(input[0], input.Count > 1 ? input.Skip(1).ToArray() : null));
+                }
+                catch (CommandNotFoundException)
+                {
+                    WriteLine("Invalid command, please use one of the following commands");
+                }
+            }
         }
 
         public static void FibonacciNumber(int n){

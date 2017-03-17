@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace MinuxShell
+namespace Marcetux.Shell
 {
     class CommandNotFoundException : Exception
     {
