@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+
 
 namespace Marcetux.Shell
 {
@@ -13,21 +18,15 @@ namespace Marcetux.Shell
         {
             register = new Dictionary<string, ICommand>();
            
- //TODO: fix this          
-/*           
-            var commands = Assembly.GetExecutingAssembly().GetTypes()
-    .Where(x => x.GetInterfaces().Contains(typeof(ICommand))
+ register = new Dictionary<string, ICommand>();
+            var commands = Assembly.GetEntryAssembly().GetTypes().Where(x => x.GetInterfaces().Contains(typeof(ICommand))
                 && x.GetConstructor(Type.EmptyTypes) != null)
     .Select(x => Activator.CreateInstance(x) as ICommand);
 
-
-
-            foreach (ICommand command in commands)
+            foreach (var command in commands)
             {
                 register.Add(command.Name, command);
             }
-
-*/
 
         }
 
