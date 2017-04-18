@@ -7,6 +7,9 @@ namespace Marcetux.Shell
     {
         public string RequestedCommandName { get; private set; }
 
+        public string[] Aliases => new string[0];
+
+
         public CommandNotFoundException() : base() { }
 
         public CommandNotFoundException(string commandName)

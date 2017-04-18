@@ -7,6 +7,8 @@ namespace Marcetux.Shell
     internal class AboutCommand : ICommand
     {
         public string Name => "about";
+
+        public string[] Aliases => new string[0];
         public string Description => "Show this screen";
         public string Help => @"Yay! you now know how to use the help command, for more interesting stuff get the help for the stressCache command :)";
 

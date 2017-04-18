@@ -26,6 +26,9 @@ namespace Marcetux.Shell
             foreach (var command in commands)
             {
                 register.Add(command.Name, command);
+
+                foreach(var alias in command.Aliases)
+                    register.Add(alias, command);
             }
 
         }

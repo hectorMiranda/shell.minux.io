@@ -6,6 +6,9 @@ namespace Marcetux.Shell
     internal class ClearCommand : ICommand
     {
         public string Name => "clear";
+
+        public string[] Aliases => new string[0];
+
         public string Description => "Clears the console screen.";
         public string Help => "Clears the console screen.";
 

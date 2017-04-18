@@ -10,6 +10,9 @@ namespace Marcetux.Shell
     {
         public string Name => "util";
         public string Description => "Lets ";
+
+        public string[] Aliases => new string[0];
+
         public string Help => "This algorithms can help to you to prepare for your next interview";
 
 ///Expects following syntax: algo fibo params[]s
