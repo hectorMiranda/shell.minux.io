@@ -14,7 +14,7 @@ namespace Marcetux
 
             while (true)
             {
-                Console.Write("#");
+                Console.Write(">");
                 var input = ReadLine().Split(' ').ToList<string>();
                 try
                 {
