@@ -18,7 +18,7 @@ namespace Marcetux
                 var input = ReadLine().Split(' ').ToList<string>();
                 try
                 {
-                    WriteLine("{0}", Processor.Execute(input[0], input.Count > 1 ? input.Skip(1).ToArray() : null));
+                    WriteLine("{0}", Processor.Execute(input[0], input.Count > 1 ? input.Skip(1).ToArray() : new string[0]));
                 }
                 catch (CommandNotFoundException)
                 {
