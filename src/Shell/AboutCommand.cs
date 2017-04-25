@@ -10,7 +10,7 @@ namespace Marcetux.Shell
 
         public string[] Aliases => new string[]{"?"};
         public string Description => "Show this screen";
-        public string Help => @"Yay! you now know how to use the help command, for more interesting stuff get the help for the stressCache command :)";
+        public string Help => @"";
 
 
 
