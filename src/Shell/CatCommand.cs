@@ -18,16 +18,25 @@ namespace Marcetux.Shell
 
         public string Execute(string[] args)
         {
-            Console.Clear();
+            var message = "filename is required";
             
-
-            var lines = Utils.ReadFrom("README.md");
-            foreach (var line in lines)
+            if(args.Length>0)
             {
-                Console.WriteLine(line); 
+                try{
+                    var lines = Utils.ReadFrom(args[0]);
+                    foreach (var line in lines)
+                    {
+                        Console.WriteLine(line); 
+                    }
+                }
+                catch(Exception ex)
+                {
+                    message = ex.Message;
+                }
             }
 
-            return "";
+            return message;
+            
         }
     }
 }
