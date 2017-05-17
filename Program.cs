@@ -1,5 +1,4 @@
 ﻿using System;
-using Marcetux.Algorithms;
 using Marcetux.Shell;
 using static System.Console;
 using System.Linq;

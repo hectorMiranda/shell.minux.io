@@ -27,12 +27,12 @@ namespace Marcetux.Shell
 
                 foreach (DirectoryInfo d in dir.GetDirectories())
                 {
-                    result.Append(string.Format("{0, -30}\t directory", d.Name));
+                    result.Append($"d {d.LastAccessTime} {d.Name}{Environment.NewLine}");
                 }
 
                 foreach (FileInfo f in dir.GetFiles())
                 {
-                    result.Append(string.Format("{0, -30}\t File", f.Name));
+                    result.Append($"d {f.LastAccessTime} {f.Name}{Environment.NewLine}");
                 }
             }
 
