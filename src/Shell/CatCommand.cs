@@ -18,7 +18,7 @@ namespace Marcetux.Shell
 
         public string Execute(string[] args)
         {
-            var message = "filename is required";
+            var message = string.Empty;
             
             if(args.Length>0)
             {
@@ -33,6 +33,9 @@ namespace Marcetux.Shell
                 {
                     message = ex.Message;
                 }
+            }else
+            {
+                message = "filename is required";
             }
 
             return message;
