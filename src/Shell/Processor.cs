@@ -18,10 +18,9 @@ namespace Marcetux.Shell
         {
             register = new Dictionary<string, ICommand>();
            
- register = new Dictionary<string, ICommand>();
-            var commands = Assembly.GetEntryAssembly().GetTypes().Where(x => x.GetInterfaces().Contains(typeof(ICommand))
-                && x.GetConstructor(Type.EmptyTypes) != null)
-    .Select(x => Activator.CreateInstance(x) as ICommand);
+            var commands = Assembly.GetEntryAssembly().GetTypes()
+            .Where(x => x.GetInterfaces().Contains(typeof(ICommand)) && x.GetConstructor(Type.EmptyTypes) != null)
+            .Select(x => Activator.CreateInstance(x) as ICommand);
 
             foreach (var command in commands)
             {

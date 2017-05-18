@@ -7,7 +7,7 @@ namespace Marcetux.Shell
     {
         public string Name => "exit";
 
-        public string[] Aliases => new string[]{"quit", "/"};
+        public string[] Aliases => new string[]{"quit"};
 
         public string Description => "Exit this session.";
         public string Help => "Exit this session.";

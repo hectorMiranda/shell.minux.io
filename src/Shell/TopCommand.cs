@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 
 namespace Marcetux.Shell
@@ -10,19 +11,24 @@ namespace Marcetux.Shell
         public string[] Aliases => new string[0];
 
         public string Description => "Display and update sorted information about processes";
-        public string Help => @"top(1)                                                                                                                                                                                                                                                top(1)
-
-
-
-NAME
-       top - display and update sorted information about processes";
-
-
-
+        public string Help => @"";
 
         public string Execute(string[] args)
         {
-            Console.Clear();
+            Process[] processlist = Process.GetProcesses();
+
+            foreach(Process p in processlist)
+            {
+                try 
+                {
+                    Console.WriteLine("Process: {0} ID: {1} STARTTIME: {2} CPUTIME: {3} #THREADS: {4}", p.ProcessName, p.Id, p.StartTime, p.TotalProcessorTime, p.Threads.Count);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine($"ERROR:{ex.Message} Hint: try sudo!");
+                }
+            }
+        
             return null;
         }
     }
