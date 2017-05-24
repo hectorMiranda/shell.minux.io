@@ -10,14 +10,17 @@ namespace Marcetux.Caching.Interfaces
     public interface IReplacementAlgorithm<TKey, TValue> 
     {
 
+        ICollection<TKey> Evictables { get; set; }
+        ICollection<TKey> CreateEvictableCollection();
         Type GetType();
 
-        ICollection<TKey> Evictables { get; set; }
-        Dictionary<TKey, TValue> State { get; set; }
-
-        ICollection<TKey> CreateEvictableCollection();
+        CacheAccessCallback<TKey, TValue> OnGet { get; set; }
+        CacheAccessCallback<TKey, TValue> OnAdd { get; set; }
+        CacheAccessCallback<TKey, TValue> OnPut { get; set; }
+        CacheEvictionCallback<TKey, TValue> OnEvict { get; set; }
 
         bool Handle(CacheAccessOperation access, TKey key, ref TValue value, bool isGetOrPut);
+        bool Evict(TKey key);
         bool Evict();
         bool GetNextEvictedKey(out TKey key);
     }
