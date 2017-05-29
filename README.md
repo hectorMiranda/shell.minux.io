@@ -1,5 +1,3 @@
-#Dotnet-core utilities
-
 ### Setup instructions for Ubuntu 16.10
 
 ```
