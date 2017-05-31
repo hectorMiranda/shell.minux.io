@@ -1,13 +1,13 @@
 ## Minux Shell
 
-`
+```
  _ __ ___ (_)_ __  _   ___  __ (_) ___
 | '_ ` _ \| | '_ \| | | \ \/ / | |/ _ \
 | | | | | | | | | | |_| |>  < _| | (_) |
 |_| |_| |_|_|_| |_|\__,_/_/\_(_)_|\___/
 The multiplatform minux.io client
 
-`
+```
 
 ### Setup instructions for Ubuntu 16.10
 
