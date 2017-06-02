@@ -14,8 +14,7 @@ namespace Marcetux.Shell
         public string[] Aliases => new string[]{"wsstart"};
 
         public string Description => "Starts a webserver exposing operational endpoints";
-        public string Help => "StartWebServerCommand help";
-
+        public string Help => "Start a new minux server";
 
 
 
