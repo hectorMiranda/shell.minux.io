@@ -22,7 +22,7 @@ namespace Marcetux.Services
     
         public void Run()
         {
-            _logger.LogWarning($"Running minux service: {_config.Title}");
+            _logger.LogInformation($"Starting: {_config.Title}");
         }
 
     }
