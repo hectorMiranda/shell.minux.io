@@ -1,37 +1,47 @@
-﻿using System;
-using System.IO;
-using Marcetux.Shell;
-using static System.Console;
-using System.Linq;
+﻿using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Marcetux 
 {
+    using Shell;
+    using Configuration;
+    using Services.Interfaces;
+    using Services;
     public class Program
     {
         public static void Main(string[] args)
         {
-            WriteLine(Processor.Execute("about", null));
-
-            while (true)
-            {
-                Console.Write(">");
-                try
-                {
-                    var input = ReadLine().Split(' ').ToList<string>();
-
-                    WriteLine("{0}", Processor.Execute(input[0], input.Count > 1 ? input.Skip(1).ToArray() : new string[0]));
-                }
-                catch (CommandNotFoundException)
-                {
-                    WriteLine("Invalid command, please use one of the following commands");
-                }
-                catch (IOException)
-                {
-                    WriteLine("X(");
-                    break;
-                }
-            }
+        var serviceCollection = new ServiceCollection();
+        ConfigureServices(serviceCollection);
+ 
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+ 
+        serviceProvider.GetService<Kernel>().Run();
         }
+
+        private static void ConfigureServices(IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddSingleton(new LoggerFactory()
+                .AddConsole()
+                .AddDebug());
+        
+            serviceCollection.AddLogging(); 
+        
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("app-settings.json", false)
+                .Build();
+            serviceCollection.AddOptions();
+            serviceCollection.Configure<AppSettings>(configuration.GetSection("Configuration"));
+        
+            serviceCollection.AddTransient<IMinuxService, MinuxService>();
+        
+            serviceCollection.AddTransient<Kernel>();
+        }
+
+
      }
 }
 

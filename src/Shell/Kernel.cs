@@ -1,26 +1,57 @@
+using System;
+using System.IO;
+using static System.Console;
+using System.Linq;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Marcetux.Shell
 {
-
     using Marcetux.Services.Interfaces;
+    using Marcetux.Configuration;
     public class Kernel
-{
-    private readonly IMinuxService _minuxService;
- 
-    public Kernel(IMinuxService minuxService)
     {
-        _minuxService = minuxService;
+        private readonly IMinuxService _minuxService;
+        private readonly ILogger<Kernel> _logger;
+        private readonly AppSettings _config;
+        public Kernel(IMinuxService minuxService,
+        IOptions<AppSettings> config,
+        ILogger<Kernel> logger)
+        {
+            _minuxService = minuxService;
+            _logger = logger;
+            _config = config.Value;
+
+        }
+    
+        public void Run()
+        {
+            _logger.LogInformation($"Title: {_config.Title}");
+
+            _minuxService.Run();
+            //System.Console.ReadKey();
+
+            WriteLine(Processor.Execute("about", null));
+
+                while (true)
+                {
+                    Console.Write(">");
+                    try
+                    {
+                        var input = ReadLine().Split(' ').ToList<string>();
+
+                        WriteLine("{0}", Processor.Execute(input[0], input.Count > 1 ? input.Skip(1).ToArray() : new string[0]));
+                    }
+                    catch (CommandNotFoundException)
+                    {
+                        WriteLine("Invalid command, please use one of the following commands");
+                    }
+                    catch (IOException)
+                    {
+                        WriteLine("X(");
+                        break;
+                    }
+                }
+        }
     }
- 
-    public void Run()
-    {
-        
-        //_minuxService.Run();
-        //System.Console.ReadKey();
-
-
-
-
-    }
-}
 }
