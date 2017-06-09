@@ -1,9 +1,7 @@
 namespace Marcetux.Services.Interfaces
 {
-
-public interface IMinuxService
-{
-    void Run();
-}
-
+    public interface IMinuxService
+    {
+        void Run();
+    }
 }

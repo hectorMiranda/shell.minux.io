@@ -11,7 +11,6 @@ namespace Marcetux.Services
         private readonly ILogger<MinuxService> _logger;
         private readonly AppSettings _config;
 
-
         public MinuxService(ILogger<MinuxService> logger,
         IOptions<AppSettings> config)
         {
@@ -22,7 +21,7 @@ namespace Marcetux.Services
     
         public void Run()
         {
-            _logger.LogInformation($"Starting: {_config.Title}");
+            _logger.LogInformation($"Booting mode: {_config.InstanceType}");
         }
 
     }

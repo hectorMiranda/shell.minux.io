@@ -14,14 +14,11 @@ namespace Marcetux.Shell
         private readonly IMinuxService _minuxService;
         private readonly ILogger<Kernel> _logger;
         private readonly AppSettings _config;
-        public Kernel(IMinuxService minuxService,
-        IOptions<AppSettings> config,
-        ILogger<Kernel> logger)
+        public Kernel(IMinuxService minuxService, IOptions<AppSettings> config, ILogger<Kernel> logger)
         {
             _minuxService = minuxService;
             _logger = logger;
             _config = config.Value;
-
         }
     
         public void Run()

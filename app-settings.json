@@ -1,5 +1,7 @@
 {
   "Configuration": {
-    "Title": "Minux.io Shell :)"
+    "InstanceType": "Shell",
+    "Port": 9000,
+    "DebugLevel": "all"
   }
 }

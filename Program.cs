@@ -33,6 +33,7 @@ namespace Marcetux
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("app-settings.json", false)
                 .Build();
+                
             serviceCollection.AddOptions();
             serviceCollection.Configure<AppSettings>(configuration.GetSection("Configuration"));
         
