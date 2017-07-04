@@ -1,4 +1,5 @@
 using Nancy;
+using System.Collections.Generic;
 
 namespace Marcetux.Web
 {
@@ -23,6 +24,18 @@ namespace Marcetux.Web
 
                 return Response.AsJson(echo);
             });
+
+
+            Get("/schedule", _ => {
+                return Response.AsJson( new Dictionary<string, string>{
+                    {"Piano", "5:30am"}, {"Guitar", "8:00pm"}, {"Muay thai", "6:00am"}, {"DuoLingo", "5:00am"}, {"Code commit","7:30am"}
+                });
+            });
         }
+
+
+
+
+
     }
 }
