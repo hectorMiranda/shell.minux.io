@@ -28,7 +28,7 @@ namespace Marcetux.Web
 
             Get("/schedule", _ => {
                 return Response.AsJson( new Dictionary<string, string>{
-                    {"Piano", "5:30am"}, {"Guitar", "8:00pm"}, {"Muay thai", "6:00am"}, {"DuoLingo", "5:00am"}, {"Code commit","7:30am"}, {"Drawing","8:00pm"}
+                    {"Piano", "5:30am"}, {"Guitar", "8:00pm"}, {"Muay thai", "6:00am"}, {"DuoLingo", "5:00am"}, {"Code commit","7:30am"}, {"Drawing","8:00pm"}, {"Photography","6:00pm"}, {"Marcetux","9:00pm"}
                 });
             });
         }
