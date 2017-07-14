@@ -5,7 +5,6 @@
 | '_ ` _ \| | '_ \| | | \ \/ / | |/ _ \
 | | | | | | | | | | |_| |>  < _| | (_) |
 |_| |_| |_|_|_| |_|\__,_/_/\_(_)_|\___/
-The multiplatform minux.io client
 
 ```
 ### Setup instructions for Ubuntu 14.04 (Windows 10)
