@@ -1,4 +1,4 @@
-## Minux Shell
+## Minux.io Shell
 
 ```
  _ __ ___ (_)_ __  _   ___  __ (_) ___
