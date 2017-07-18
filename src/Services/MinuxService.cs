@@ -28,7 +28,7 @@ namespace Marcetux.Services
         {
             _logger.LogInformation($"Booting mode: {_config.InstanceType}");
 
-            if(_config.InstanceType.ToLower() == "shell")
+            //if(_config.InstanceType.ToLower() == "shell")
                 RunShellMode();
         }
 

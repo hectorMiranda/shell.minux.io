@@ -1,6 +1,6 @@
 {
   "Configuration": {
-    "InstanceType": "Shell",
+    "InstanceType": "shell",
     "Port": 9000,
     "DebugLevel": "all"
   }
