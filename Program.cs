@@ -11,7 +11,7 @@ namespace Marcetux
     using Services;
     public class Program
     {
-        public static void Start(string[] args)
+        public static void Main(string[] args)
         {
         var serviceCollection = new ServiceCollection();
         ConfigureServices(serviceCollection);
