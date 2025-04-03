@@ -1,0 +1,1 @@
+/marcetux/shell.minux.io/rust/minux-core/target/debug/minux-core: /marcetux/shell.minux.io/rust/minux-core/src/lib.rs /marcetux/shell.minux.io/rust/minux-core/src/main.rs /marcetux/shell.minux.io/rust/minux-core/src/plugins/robotics.rs /marcetux/shell.minux.io/rust/minux-core/src/plugins/sandbox.rs
