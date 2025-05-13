@@ -3,9 +3,9 @@ CXXFLAGS = -Wall -Wextra -g -I. -std=c++11
 # Detect if we're on Linux
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-    LDFLAGS = -lncurses -lmenu -lpanel -lpthread -lrt -lsecp256k1 -lcrypto
+    LDFLAGS = -lncurses -lmenu -lpanel -lpthread -lrt -lsecp256k1 -lcrypto -lasound
 else
-    LDFLAGS = -lncurses -lmenu -lpanel -lpthread -lrt -lsecp256k1 -lcrypto
+    LDFLAGS = -lncurses -lmenu -lpanel -lpthread -lrt -lsecp256k1 -lcrypto -lasound
 endif
 
 # Improved Raspberry Pi detection

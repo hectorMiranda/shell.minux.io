@@ -37,6 +37,7 @@
 #include <openssl/ecdsa.h>
 #include <openssl/obj_mac.h>
 #include <openssl/bn.h>
+#include <alsa/asoundlib.h>
 
 // Define GPIO constants for systems without pigpio
 #define PI_INPUT 0
@@ -126,6 +127,9 @@ void play_tone(int frequency, int duration_ms);
 void play_note(const char *note, int duration_ms);
 void play_scale(const char *scale_name);
 double get_note_frequency(const char *note);
+void cmd_midi(const char *arg);
+void list_midi_devices(void);
+void play_midi_test(void);
 
 // Todo App function prototypes
 void cmd_todo(const char *arg);
@@ -185,6 +189,7 @@ Command commands[] = {
     {"play", NULL, "Play audio files, notes or scales"}, // Add play command
     {"todo", NULL, "Task management (use 'todo help' for options)"}, // Add todo command
     {"crypto", NULL, "Crypto operations"}, // Add crypto command
+    {"midi", NULL, "MIDI device management and testing"}, // Add midi command
     {NULL, NULL, NULL}
 };
 
@@ -865,6 +870,10 @@ void handle_command(const char *cmd) {
         } else {
             cmd_wallet(NULL); // No arguments, show help
         }
+        show_prompt();
+    }
+    else if (strcmp(args[0], "midi") == 0) {
+        cmd_midi(argc > 1 ? args[1] : NULL);
         show_prompt();
     }
     else {
@@ -4562,6 +4571,105 @@ char *bytes_to_hex(const unsigned char *bytes, size_t len) {
     }
     hex_buffer[len * 2] = '\0';
     return hex_buffer;
+}
+
+void cmd_midi(const char *arg) {
+    if (!arg || !*arg) {
+        list_midi_devices();
+        return;
+    }
+    
+    if (strcmp(arg, "test") == 0) {
+        play_midi_test();
+        return;
+    }
+    
+    log_error(error_console, ERROR_WARNING, "MINUX", 
+             "Usage: midi [test]");
+}
+
+void list_midi_devices(void) {
+    int card = -1;
+    int device = -1;
+    int status;
+    snd_ctl_t *handle;
+    snd_rawmidi_info_t *info;
+    char name[32];
+    
+    printw("\nAvailable MIDI devices:\n");
+    refresh();
+    
+    // First, list all sound cards
+    while (snd_card_next(&card) >= 0 && card >= 0) {
+        sprintf(name, "hw:%d", card);
+        status = snd_ctl_open(&handle, name, 0);
+        if (status < 0) {
+            continue;
+        }
+        
+        device = -1;
+        while (snd_ctl_rawmidi_next_device(handle, &device) >= 0 && device >= 0) {
+            snd_rawmidi_info_alloca(&info);
+            snd_rawmidi_info_set_device(info, device);
+            snd_rawmidi_info_set_stream(info, SND_RAWMIDI_STREAM_OUTPUT);
+            
+            if (snd_ctl_rawmidi_info(handle, info) >= 0) {
+                printw("Card %d, Device %d: %s\n", 
+                       card, device, snd_rawmidi_info_get_name(info));
+                refresh();
+            }
+        }
+        snd_ctl_close(handle);
+    }
+    
+    printw("\nTo test MIDI output, use: midi test\n");
+    refresh();
+}
+
+void play_midi_test(void) {
+    snd_rawmidi_t *midi_out;
+    int status;
+    unsigned char note;
+    // Remove unused velocity variable
+    int duration = 500000; // 500ms in microseconds
+    
+    // Try to open the first available MIDI device
+    status = snd_rawmidi_open(NULL, &midi_out, "hw:0,0,0", SND_RAWMIDI_SYNC);
+    if (status < 0) {
+        log_error(error_console, ERROR_WARNING, "MINUX", 
+                 "Could not open MIDI device: %s", snd_strerror(status));
+        return;
+    }
+    
+    printw("\nPlaying Mozart's Turkish March (simplified)...\n");
+    refresh();
+    
+    // Simple melody (first few notes of Turkish March)
+    unsigned char melody[] = {
+        0x90, 0x3C, // Note on, middle C
+        0x90, 0x40, // Note on, E
+        0x90, 0x43, // Note on, G
+        0x90, 0x48, // Note on, C (octave up)
+        0x90, 0x43, // Note on, G
+        0x90, 0x40, // Note on, E
+        0x90, 0x3C, // Note on, middle C
+    };
+    
+    // Play each note - using size_t for the loop counter
+    for (size_t i = 0; i < sizeof(melody); i += 2) {
+        snd_rawmidi_write(midi_out, &melody[i], 2);
+        usleep(duration);
+        
+        // Note off
+        note = melody[i + 1];
+        unsigned char note_off[] = {0x80, note, 0};
+        snd_rawmidi_write(midi_out, note_off, 3);
+        usleep(100000); // 100ms pause between notes
+    }
+    
+    snd_rawmidi_close(midi_out);
+    printw("MIDI test complete.\n");
+    refresh();
 }
 
 int main(void) {
