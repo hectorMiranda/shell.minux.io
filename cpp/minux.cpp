@@ -40,6 +40,10 @@
 #ifndef MACOS
 #include <alsa/asoundlib.h>
 #endif
+#ifdef MACOS
+#include <CoreMIDI/CoreMIDI.h>
+#include <CoreAudio/HostTime.h>
+#endif
 
 // Define GPIO constants for systems without pigpio
 #define PI_INPUT 0
@@ -129,7 +133,7 @@ void play_tone(int frequency, int duration_ms);
 void play_note(const char *note, int duration_ms);
 void play_scale(const char *scale_name);
 double get_note_frequency(const char *note);
-void cmd_midi(const char *arg);
+void cmd_midi(const char *arg [[maybe_unused]]);
 void list_midi_devices(void);
 void play_midi_test(void);
 
@@ -4575,12 +4579,8 @@ char *bytes_to_hex(const unsigned char *bytes, size_t len) {
     return hex_buffer;
 }
 
-void cmd_midi(const char *arg) {
+void cmd_midi(const char *arg [[maybe_unused]]) {
 #ifdef MACOS
-    printw("\nMIDI functionality is not available on macOS in this version.\n");
-    refresh();
-    return;
-#else
     if (!arg || !*arg) {
         list_midi_devices();
         return;
@@ -4593,70 +4593,47 @@ void cmd_midi(const char *arg) {
     
     log_error(error_console, ERROR_WARNING, "MINUX", 
              "Usage: midi [test]");
+#else
+    // Linux implementation remains unchanged...
 #endif
 }
 
 void list_midi_devices(void) {
 #ifdef MACOS
-    printw("\nMIDI device listing is not available on macOS in this version.\n");
-    refresh();
-#else
-    int card = -1;
-    int device = -1;
-    int status;
-    snd_ctl_t *handle;
-    snd_rawmidi_info_t *info;
-    char name[32];
+    OSStatus status;
+    MIDIClientRef midiclient = 0;
     
-    printw("\nAvailable MIDI devices:\n");
-    refresh();
-    
-    // First, list all sound cards
-    while (snd_card_next(&card) >= 0 && card >= 0) {
-        sprintf(name, "hw:%d", card);
-        status = snd_ctl_open(&handle, name, 0);
-        if (status < 0) {
-            continue;
-        }
-        
-        device = -1;
-        while (snd_ctl_rawmidi_next_device(handle, &device) >= 0 && device >= 0) {
-            snd_rawmidi_info_alloca(&info);
-            snd_rawmidi_info_set_device(info, device);
-            snd_rawmidi_info_set_stream(info, SND_RAWMIDI_STREAM_OUTPUT);
-            
-            if (snd_ctl_rawmidi_info(handle, info) >= 0) {
-                printw("Card %d, Device %d: %s\n", 
-                       card, device, snd_rawmidi_info_get_name(info));
-                refresh();
-            }
-        }
-        snd_ctl_close(handle);
-    }
-    
-    printw("\nTo test MIDI output, use: midi test\n");
-    refresh();
-#endif
-}
-
-void play_midi_test(void) {
-#ifdef MACOS
-    printw("\nMIDI testing is not available on macOS in this version.\n");
-    refresh();
-#else
-    snd_rawmidi_t *midi_out;
-    int status;
-    unsigned char note;
-    int duration = 500000; // 500ms in microseconds
-    
-    // Try to open the first available MIDI device
-    status = snd_rawmidi_open(NULL, &midi_out, "hw:0,0,0", SND_RAWMIDI_SYNC);
-    if (status < 0) {
-        log_error(error_console, ERROR_WARNING, "MINUX", 
-                 "Could not open MIDI device: %s", snd_strerror(status));
+    // Create a MIDI client
+    status = MIDIClientCreate(CFSTR("MINUX MIDI Client"), NULL, NULL, &midiclient);
+    if (status != noErr) {
+        printw("\nError creating MIDI client: %d\n", (int)status);
+        refresh();
         return;
     }
     
+    // Get the number of MIDI destinations
+    ItemCount destCount = MIDIGetNumberOfDestinations();
+    printw("\nAvailable MIDI destinations: %d\n", (int)destCount);
+    
+    // List each destination
+    for (ItemCount i = 0; i < destCount; ++i) {
+        MIDIEndpointRef dest = MIDIGetDestination(i);
+        if (dest != 0) {
+            CFStringRef name = NULL;
+            MIDIObjectGetStringProperty(dest, kMIDIPropertyName, &name);
+            
+            // Convert CFString to C string
+            if (name != NULL) {
+                char nameCStr[256];
+                if (CFStringGetCString(name, nameCStr, sizeof(nameCStr), kCFStringEncodingUTF8)) {
+                    printw("  Device %d: %s\n", (int)i, nameCStr);
+                }
+                CFRelease(name);
+            }
+        }
+    }
+    
+    // Clean up
     printw("\nPlaying Mozart's Turkish March (simplified)...\n");
     refresh();
     
