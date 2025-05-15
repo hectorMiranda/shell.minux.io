@@ -4576,6 +4576,11 @@ char *bytes_to_hex(const unsigned char *bytes, size_t len) {
 }
 
 void cmd_midi(const char *arg) {
+#ifdef MACOS
+    printw("\nMIDI functionality is not available on macOS in this version.\n");
+    refresh();
+    return;
+#else
     if (!arg || !*arg) {
         list_midi_devices();
         return;
@@ -4588,9 +4593,14 @@ void cmd_midi(const char *arg) {
     
     log_error(error_console, ERROR_WARNING, "MINUX", 
              "Usage: midi [test]");
+#endif
 }
 
 void list_midi_devices(void) {
+#ifdef MACOS
+    printw("\nMIDI device listing is not available on macOS in this version.\n");
+    refresh();
+#else
     int card = -1;
     int device = -1;
     int status;
@@ -4626,13 +4636,17 @@ void list_midi_devices(void) {
     
     printw("\nTo test MIDI output, use: midi test\n");
     refresh();
+#endif
 }
 
 void play_midi_test(void) {
+#ifdef MACOS
+    printw("\nMIDI testing is not available on macOS in this version.\n");
+    refresh();
+#else
     snd_rawmidi_t *midi_out;
     int status;
     unsigned char note;
-    // Remove unused velocity variable
     int duration = 500000; // 500ms in microseconds
     
     // Try to open the first available MIDI device
@@ -4657,7 +4671,7 @@ void play_midi_test(void) {
         0x90, 0x3C, // Note on, middle C
     };
     
-    // Play each note - using size_t for the loop counter
+    // Play each note
     for (size_t i = 0; i < sizeof(melody); i += 2) {
         snd_rawmidi_write(midi_out, &melody[i], 2);
         usleep(duration);
@@ -4672,6 +4686,7 @@ void play_midi_test(void) {
     snd_rawmidi_close(midi_out);
     printw("MIDI test complete.\n");
     refresh();
+#endif
 }
 
 int main(void) {
