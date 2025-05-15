@@ -21,6 +21,26 @@ sudo apt-get update
 sudo apt-get install libcamera-dev libncurses5-dev libncursesw5-dev pigpio
 ```
 
+
+
+Mac:
+
+```bash
+brew install openssl@3
+```
+
+the add OpenSSL to compiler paths
+
+```bash
+export LDFLAGS="-L$(brew --prefix openssl@3)/lib"
+export CPPFLAGS="-I$(brew --prefix openssl@3)/include"
+export PKG_CONFIG_PATH="$(brew --prefix openssl@3)/lib/pkgconfig"
+```
+
+
+
+
+
 ### Compiling the Program
 
 To compile the `minux` shell, navigate to the project directory and run the following command:

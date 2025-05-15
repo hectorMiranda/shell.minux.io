@@ -1,10 +1,16 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -g -I. -std=c++11
-# Detect if we're on Linux
+# Detect if we're on macOS (Darwin)
 UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Linux)
-    LDFLAGS = -lncurses -lmenu -lpanel -lpthread -lrt -lsecp256k1 -lcrypto -lasound
+ifeq ($(UNAME_S),Darwin)
+    # Mac OS X specific settings - use Homebrew for dependencies
+    OPENSSL_ROOT := $(shell brew --prefix openssl@3)
+    SECP256K1_ROOT := $(shell brew --prefix secp256k1)
+    CXXFLAGS += -I$(OPENSSL_ROOT)/include -I$(SECP256K1_ROOT)/include -DMACOS
+    LDFLAGS = -L$(OPENSSL_ROOT)/lib -L$(SECP256K1_ROOT)/lib -lncurses -lmenu -lpanel -lpthread -lsecp256k1 -lcrypto
 else
+    # Linux settings
+    CXXFLAGS += -DLINUX
     LDFLAGS = -lncurses -lmenu -lpanel -lpthread -lrt -lsecp256k1 -lcrypto -lasound
 endif
 
@@ -84,9 +90,13 @@ all:
 	@if [ "$(IS_PI)" = "1" ]; then \
 		echo "Raspberry Pi detection: $(IS_PI)"; \
 	else \
-		echo "Building for non-Raspberry Pi platform (like Ubuntu)"; \
+		echo "Building for non-Raspberry Pi platform (like macOS/Linux)"; \
 	fi
 	@echo "PIGPIO support: $(HAS_PIGPIO)"
+	@if [ "$(UNAME_S)" = "Darwin" ]; then \
+		echo "macOS detected - using OpenSSL from: $(OPENSSL_ROOT)"; \
+		echo "macOS detected - using secp256k1 from: $(SECP256K1_ROOT)"; \
+	fi
 	@if [ "$(IS_PI)" = "1" ] && [ "$(HAS_PIGPIO)" = "0" ]; then \
 		echo "NOTE: Building without pigpio on Raspberry Pi."; \
 		echo "To add hardware GPIO support: sudo apt-get install libpigpio-dev"; \

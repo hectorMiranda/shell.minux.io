@@ -37,7 +37,9 @@
 #include <openssl/ecdsa.h>
 #include <openssl/obj_mac.h>
 #include <openssl/bn.h>
+#ifndef MACOS
 #include <alsa/asoundlib.h>
+#endif
 
 // Define GPIO constants for systems without pigpio
 #define PI_INPUT 0
