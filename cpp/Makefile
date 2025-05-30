@@ -11,7 +11,7 @@ ifeq ($(UNAME_S),Darwin)
 else
     # Linux settings
     CXXFLAGS += -DLINUX
-    LDFLAGS = -lncurses -lmenu -lpanel -lpthread -lrt -lsecp256k1 -lcrypto -lasound
+    LDFLAGS = -lncurses -lmenu -lpanel -lpthread -lrt -lsecp256k1 -lcrypto -lasound -lportaudio -lsndfile
 endif
 
 # Improved Raspberry Pi detection
